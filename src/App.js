@@ -4,6 +4,7 @@ import "./App.css";
 import Navbar from "./components/layout/Navbar";
 import Index from "./components/layout/Index";
 import { Provider } from "./Context";
+import Lyrics from "./components/layout/tracks/Lyrics";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <div className="container">
             <Switch>
               <Route exact path="/" component={Index}></Route>
+              <Route exact path="/lyrics/track/:id" component={Lyrics} />
             </Switch>
           </div>
         </>
