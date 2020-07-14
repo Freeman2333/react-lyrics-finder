@@ -1,5 +1,6 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+
 export const Context = React.createContext();
 
 const reducer = (state, action) => {
@@ -15,32 +16,30 @@ const reducer = (state, action) => {
   }
 };
 
-export class Provider extends Component {
-  state = {
-    API_KEY: "d401b40d2200d7d835104896b5d895e3",
+export function ContextController({ children }) {
+  let initialState = {
     track_list: [],
-    heading: "Top 10 Tracks",
-    dispatch: (action) => this.setState((state) => reducer(state, action)),
+    heading: "",
   };
-  componentDidMount() {
+  const [state, setState] = useState(initialState);
+  let API_KEY = "d401b40d2200d7d835104896b5d895e3";
+
+  useEffect(() => {
     axios
       .get(
-        `https://cors-anywhere.herokuapp.com/http://api.musixmatch.com/ws/1.1/chart.tracks.get?page=1&page_size=10&country=us&f_has_lyrics=1&apikey=${this.state.API_KEY}`
+        `https://cors-anywhere.herokuapp.com/http://api.musixmatch.com/ws/1.1/chart.tracks.get?page=1&page_size=10&country=us&f_has_lyrics=1&apikey=${API_KEY}`
       )
       .then((res) => {
-        this.setState({
-          ...this.state,
+        setState({
           track_list: res.data.message.body.track_list,
+          heading: "Top 10 tracks",
         });
       })
       .catch((err) => console.log(err));
-  }
-  render() {
-    return (
-      <Context.Provider value={this.state}>
-        {this.props.children}
-      </Context.Provider>
-    );
-  }
+  }, []);
+  return (
+    <Context.Provider value={[state, setState]}>{children}</Context.Provider>
+  );
 }
+
 export const Consumer = Context.Consumer;

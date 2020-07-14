@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/layout/Navbar";
 import Index from "./components/layout/Index";
-import { Provider } from "./Context";
+import { ContextController } from "./Context";
 import Lyrics from "./components/layout/tracks/Lyrics";
 
 function App() {
   return (
-    <Provider>
+    <ContextController>
       <Router>
         <>
           <Navbar></Navbar>
@@ -20,7 +20,7 @@ function App() {
           </div>
         </>
       </Router>
-    </Provider>
+    </ContextController>
   );
 }
 
